@@ -1,17 +1,18 @@
 require("dotenv").config({path: './config.env'});
 const appError = require('./utils/appError')
 const express = require('express')
-const app = express()
 const userRoute = require('./routes/userRoutes')
 const blogRoute = require('./routes/blogRoutes')
 const errorHandler = require('./controllers/errorControllers')
 const cookie = require ('cookie-parser')
 
-
+const app = express()
 app.use(cookie())
 
 app.use(express.json())
 app.use(express.urlencoded({extended:false}))
+
+//USing The Route Created
 app.use('/api/blog', blogRoute)
 app.use('/api/user', userRoute)
 
@@ -25,8 +26,8 @@ app.get('/', (req,res)=>{
 
 
 //Error Handler -G
-app.all('*', (req, res, next, err) =>{
- return next( new appError(400, `${req.Url} not found` ))
+app.all('*', (req, res, next) =>{
+ return next( new appError(400, `${req.url} not found` ))
 })
 
 app.use(errorHandler)

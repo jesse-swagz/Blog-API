@@ -21,7 +21,7 @@ exports.createBlog = async (req, res, next) => {
         blog.reading_time = readingTime(blog.body)
         blog.save()
 
-        return res.status(201).json({
+        return res.status(200).json({
         status: "success",
         data: {
                 blog,

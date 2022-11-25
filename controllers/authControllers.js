@@ -5,13 +5,11 @@ const bcrypt = require("bcrypt");
 const { promisify } = require("util");
 const User = require("../models/userModel");
 
-console.log("Hello!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-
 const signup = async (req, res) => {
   try {
-    const { first_name, last_name, email, password } = req.body;
+    const { firstname, lastname, email, password } = req.body;
     // input validation
-    if (!(first_name && last_name && email && password)) {
+    if (!firstname && !lastname && !email && !password) {
       res.status(400).json({
         status: "failed",
         message: "All fields are required",
@@ -29,14 +27,16 @@ const signup = async (req, res) => {
     // if passwords match
 
     const user = await User.create({
-      first_name,
-      last_name,
+      firstname,
+      lastname,
       email,
       password,
     });
 
+    console.log(process.env.JWT_EXPIRES);
+
     const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
-      expiresIn: process.env.JWT_EXPIRES,
+      expiresIn: process.env.JWT_SECRET_EXPIRES,
     });
 
     const cookieOptions = {
@@ -79,7 +79,7 @@ const login = async (req, res) => {
     if (user && (await bcrypt.compare(password, user.password))) {
       // Create token
       const token = jwt.sign({ user_id: user._id }, process.env.JWT_SECRET, {
-        expiresIn: process.env.JWT_EXPIRES,
+        expiresIn: process.env.JWT_SECRET_EXPIRES,
       });
 
       const cookieOptions = {

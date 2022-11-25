@@ -3,7 +3,7 @@ class appError extends Error {
     super(message);
 
     this.statusCode = statusCode;
-    this.status = `$(statusCode)`.startswith("4" ? "failed" : "Server Error");
+    this.status = `$(statusCode)`.startsWith("4" ? "failed" : "Server Error");
     this.isOperational = true;
     Error.captureStackTrace(this, this.constructor);
   }
