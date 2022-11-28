@@ -8,7 +8,7 @@ const User = require("../models/userModel");
 const signup = async (req, res) => {
   try {
     const { firstname, lastname, email, password } = req.body;
-    // input validation
+    // code to validate input
     if (!firstname && !lastname && !email && !password) {
       res.status(400).json({
         status: "failed",
@@ -32,9 +32,6 @@ const signup = async (req, res) => {
       email,
       password,
     });
-
-    console.log(process.env.JWT_EXPIRES);
-
     const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
       expiresIn: process.env.JWT_SECRET_EXPIRES,
     });
@@ -58,7 +55,7 @@ const signup = async (req, res) => {
     });
   } catch (err) {
     res.status(500).json({
-      message: "oops something went wrong",
+      message: "something went wrong",
       data: err,
     });
   }

@@ -10,16 +10,16 @@ const slugify = require('slugify')
 const blogSchema = new mongoose.Schema({
     title:{
         type: String,
-        require: true,
+        required: true,
         unique: true
     },
     description:{
         type: String,
-        require: true
+        required: true
     },
     author:{
         type: objectId,
-        ref: 'USer'
+        ref: 'User'
     },
     state:{
         type: String,
@@ -48,10 +48,6 @@ const blogSchema = new mongoose.Schema({
 {
     timestamp:true
 },
-{
-    toJSON: { virtuals: true },
-    toObject: { virtuals: true },
-}
 )
 
 blogSchema.pre('save', function (next) {
@@ -69,7 +65,7 @@ blogSchema.pre(/^find/, function (next) {
 
 blogSchema.pre(
     '/^find/', function(next){
-        this.read_count = this.read_count + 1
+        this.readCount = this.readCount + 1
         next()
     }
 );

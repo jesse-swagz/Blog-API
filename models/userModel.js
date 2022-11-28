@@ -6,14 +6,13 @@ const objectId = mongoose.Schema.Types.ObjectId;
 const userSchema = new mongoose.Schema({
   firstname: {
     type: String,
-    required: [true, "Please provide firstname."],
-    unique: false,
+    required: [true, "Please provide firstname."]
   },
 
   lastname: {
     type: String,
     required: [true, "Please provide lastname."],
-    unique: false,
+
   },
 
   email: {
@@ -32,7 +31,6 @@ const userSchema = new mongoose.Schema({
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) next();
   this.password = await bcrypt.hash(this.password, 12);
-  // this.passwordConfirm = undefined
   next();
 });
 userSchema.set("toJSON", {
